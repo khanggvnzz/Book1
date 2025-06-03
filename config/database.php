@@ -11,25 +11,12 @@ class Database
 
     public function __construct()
     {
-        // Read .env file
-        $envFile = dirname(__DIR__) . '/.env';
-        if (file_exists($envFile)) {
-            $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            $env = [];
-            foreach ($lines as $line) {
-                if (strpos($line, '=') !== false) {
-                    list($key, $value) = explode('=', $line, 2);
-                    $env[trim($key)] = trim($value);
-                }
-            }
-
-            // Set database connection parameters
-            $this->host = $env['DB_HOST'] ?? '127.0.0.1';
-            $this->port = $env['DB_PORT'] ?? '3306';
-            $this->dbname = $env['DB_DATABASE'] ?? '';
-            $this->username = $env['DB_USERNAME'] ?? '';
-            $this->password = $env['DB_PASSWORD'] ?? '';
-        }
+        // Đọc biến môi trường trực tiếp
+        $this->host     = getenv('DB_HOST') ?: '127.0.0.1';
+        $this->port     = getenv('DB_PORT') ?: '3306';
+        $this->dbname   = getenv('DB_DATABASE') ?: '';
+        $this->username = getenv('DB_USERNAME') ?: 'root';
+        $this->password = getenv('DB_PASSWORD') ?: '';
     }
 
     public function connect()
